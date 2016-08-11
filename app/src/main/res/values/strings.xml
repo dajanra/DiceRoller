@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Dice Roller</string>
+    <string name="action_settings">Settings</string>
+    <string name="_7">7</string>
+    <string name="_9">9</string>
+    <string name="_8">8</string>
+    <string name="_0">0</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="d100">d100</string>
+    <string name="d20">d20</string>
+    <string name="d12">d12</string>
+    <string name="d10">d10</string>
+    <string name="d8">d8</string>
+    <string name="d6">d6</string>
+    <string name="d4">d4</string>
+    <string name="d3">d3</string>
+    <string name="d2">d2</string>
+    <string name="Roll">Roll</string>
+    <string name="equation">Equation</string>
+    <string name="delete">X</string>
+</resources>

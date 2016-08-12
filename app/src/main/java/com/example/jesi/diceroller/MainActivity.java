@@ -1,8 +1,10 @@
 package com.example.jesi.diceroller;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,17 +15,32 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Random;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptEngine;
+
+import java.util.Random;
+import java.lang.Object;
 public class MainActivity extends AppCompatActivity {
 
-        Button oneB, twoB, threeB, fourB, fiveB, sixB, sevenB, eightB,
-                nineB, zeroB, plusB, minusB, rollB,
-                deleteB, d100B, d20B, d12B, d10B, d8B, d6B, d4B, d3B, d2B;
-        TextView EquationField;
-        String theEquation ="";
-        String randomHolding;
-        Random randomGenerator = new Random();
+    Button oneB, twoB, threeB, fourB, fiveB, sixB, sevenB, eightB,
+            nineB, zeroB, plusB, minusB, rollB,
+            deleteB, d100B, d20B, d12B, d10B, d8B, d6B, d4B, d3B, d2B;
+    TextView EquationField;
+    String theEquation = "";
+    int i, multiply;
+    int answer = 0;
+    String randomHolding, toast;
+    Random randomGenerator = new Random();
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+    //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +73,7 @@ public class MainActivity extends AppCompatActivity {
         Button d3B = (Button) findViewById(R.id.d3Btn);
         Button d2B = (Button) findViewById(R.id.d2Btn);
 
-        EquationField = (TextView)findViewById(R.id.equationField);
-
-       // EquationField.setText(theEquation);
+        EquationField = (TextView) findViewById(R.id.equationField);
         //Set the equation to display the contents of a String
 
         oneB.setOnClickListener(new OnClickListener() {
@@ -66,8 +81,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 theEquation = theEquation + "1 ";
                 EquationField.setText(theEquation);
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-                //startActivity(i);
             }
 
         });
@@ -77,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 theEquation = theEquation + "2 ";
                 EquationField.setText(theEquation);
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-                //startActivity(i);
             }
 
         });
@@ -88,41 +99,33 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 theEquation = theEquation + "3 ";
                 EquationField.setText(theEquation);
-                //Intent i = (new Intent(Bar.this, Drinks.class));
-                //startActivity(i);
             }
 
         });
 
         fourB.setOnClickListener(new OnClickListener() {
-           // @Override
+            // @Override
             public void onClick(View v) {
                 theEquation = theEquation + "4 ";
                 EquationField.setText(theEquation);
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-                //startActivity(i);
             }
 
         });
 
         fiveB.setOnClickListener(new OnClickListener() {
-           // @Override
+            // @Override
             public void onClick(View v) {
                 theEquation = theEquation + "5 ";
                 EquationField.setText(theEquation);
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-              //  startActivity(i);
             }
 
         });
 
         sixB.setOnClickListener(new OnClickListener() {
-           // @Override
+            // @Override
             public void onClick(View v) {
                 theEquation = theEquation + "6 ";
                 EquationField.setText(theEquation);
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-               // startActivity(i);
             }
 
         });
@@ -132,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 theEquation = theEquation + "7 ";
                 EquationField.setText(theEquation);
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-                //startActivity(i);
             }
 
         });
@@ -143,19 +144,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 theEquation = theEquation + "8 ";
                 EquationField.setText(theEquation);
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-               // startActivity(i);
             }
 
         });
 
         nineB.setOnClickListener(new OnClickListener() {
-           // @Override
+            // @Override
             public void onClick(View v) {
                 theEquation = theEquation + "9 ";
                 EquationField.setText(theEquation);
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-               // startActivity(i);
             }
 
         });
@@ -165,50 +162,103 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 theEquation = theEquation + "0 ";
                 EquationField.setText(theEquation);
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-                //startActivity(i);
             }
 
         });
 
         plusB.setOnClickListener(new OnClickListener() {
-           // @Override
+            // @Override
             public void onClick(View v) {
                 theEquation = theEquation + "+ ";
                 EquationField.setText(theEquation);
-              //  Intent i = (new Intent(Bar.this, Drinks.class));
-              //  startActivity(i);
             }
 
         });
 
-        minusB.setOnClickListener(new OnClickListener() {
+        /*minusB.setOnClickListener(new OnClickListener() {
             //@Override
             public void onClick(View v) {
                 theEquation = theEquation + "- ";
                 EquationField.setText(theEquation);
-              // Intent i = (new Intent(Bar.this, Drinks.class));
-               // startActivity(i);
             }
 
-        });
+        });*/
 
         rollB.setOnClickListener(new OnClickListener() {
-           // @Override
+            // @Override
             public void onClick(View v) {
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-               // startActivity(i);
+
+                String[] result = theEquation.split("\\s+");
+
+
+                /*ScriptEngineManager se = new ScriptEngineManager();
+                ScriptEngine scriptengine = se.getEngineByName("JavaScript");
+                String theEquation = "2 + 3 * 6";
+                System.out.println(scriptengine.eval(theEquation));
+                */
+
+                for(i=0; i<result.length; i++)
+                {
+                    if(result[i].equals("*") {
+                    multiply = Integer.parseInt(result[i-1])* Integer.parseInt(result[i+1]);
+                }
+                }
+                    for (i = 0; i < result.length; i++) {
+
+                        if (result[i].equals("d2")) {
+                            int randomInt = randomGenerator.nextInt(2) + 1;
+                            answer = answer + randomInt;
+                        } else if (result[i].equals("d3")) {
+                            int randomInt = randomGenerator.nextInt(3) + 1;
+                            answer = answer + randomInt;
+                        } else if (result[i].equals("d4")) {
+                            int randomInt = randomGenerator.nextInt(4) + 1;
+                            answer = answer + randomInt;
+                        } else if (result[i].equals("d6")) {
+                            int randomInt = randomGenerator.nextInt(6) + 1;
+                            answer = answer + randomInt;
+                        } else if (result[i].equals("d8")) {
+                            int randomInt = randomGenerator.nextInt(8) + 1;
+                            answer = answer + randomInt;
+                        } else if (result[i].equals("d10")) {
+                            int randomInt = randomGenerator.nextInt(10) + 1;
+                            answer = answer + randomInt;
+                        } else if (result[i].equals("d12")) {
+                            int randomInt = randomGenerator.nextInt(12) + 1;
+                            answer = answer + randomInt;
+                        } else if (result[i].equals("d20")) {
+                            int randomInt = randomGenerator.nextInt(20) + 1;
+                            answer = answer + randomInt;
+                        } else if (result[i].equals("d100")) {
+                            int randomInt = randomGenerator.nextInt(100) + 1;
+                            answer = answer + randomInt;
+                        } else if (result[i].equals("+")) {
+                            answer = answer;
+                        } else {
+                            answer = answer + Integer.parseInt(result[i]);
+                        }
+
+
+                        // AlertDialog alertDialog = alertDialogBuilder.create();
+                        // alertDialog.show();
+
+                    }
+                }
+
+                String SAnswer = Integer.toString(answer);
+                EquationField.setText(SAnswer);
+                theEquation = "";
+                answer = 0;
+                toast = "";
             }
 
         });
 
         deleteB.setOnClickListener(new OnClickListener() {
-           // @Override
+            // @Override
             public void onClick(View v) {
                 theEquation = "";
                 EquationField.setText(theEquation);
-               // Intent i = (new Intent(Bar.this, Drinks.class));
-               // startActivity(i);
             }
 
         });
@@ -216,9 +266,10 @@ public class MainActivity extends AppCompatActivity {
         d2B.setOnClickListener(new OnClickListener() {
             //@Override
             public void onClick(View v) {
-                int randomInt = randomGenerator.nextInt(2)+1;
-                randomHolding = Integer.toString(randomInt);
-                theEquation = theEquation +" " + randomHolding + " ";
+                // int randomInt = randomGenerator.nextInt(2)+1;
+                //randomHolding = Integer.toString(randomInt);
+                // theEquation = theEquation +" " + randomHolding + " ";
+                theEquation = theEquation + "d2 ";
                 EquationField.setText(theEquation);
             }
 
@@ -227,9 +278,10 @@ public class MainActivity extends AppCompatActivity {
         d3B.setOnClickListener(new OnClickListener() {
             //@Override
             public void onClick(View v) {
-                int randomInt = randomGenerator.nextInt(3)+1;
-                randomHolding = Integer.toString(randomInt);
-                theEquation = theEquation +" " + randomHolding+ " ";
+                //int randomInt = randomGenerator.nextInt(3)+1;
+                //randomHolding = Integer.toString(randomInt);
+                //theEquation = theEquation +" " + randomHolding+ " ";
+                theEquation = theEquation + "d3 ";
                 EquationField.setText(theEquation);
             }
 
@@ -238,9 +290,10 @@ public class MainActivity extends AppCompatActivity {
         d4B.setOnClickListener(new OnClickListener() {
             //@Override
             public void onClick(View v) {
-                int randomInt = randomGenerator.nextInt(4)+1;
-                randomHolding = Integer.toString(randomInt);
-                theEquation = theEquation +" " + randomHolding+ " ";
+                //int randomInt = randomGenerator.nextInt(4)+1;
+                //randomHolding = Integer.toString(randomInt);
+                //theEquation = theEquation +" " + randomHolding+ " ";
+                theEquation = theEquation + "d4 ";
                 EquationField.setText(theEquation);
             }
 
@@ -249,9 +302,10 @@ public class MainActivity extends AppCompatActivity {
         d6B.setOnClickListener(new OnClickListener() {
             //@Override
             public void onClick(View v) {
-                int randomInt = randomGenerator.nextInt(6)+1;
-                randomHolding = Integer.toString(randomInt);
-                theEquation = theEquation +" " + randomHolding+ " ";
+                // int randomInt = randomGenerator.nextInt(6)+1;
+                //randomHolding = Integer.toString(randomInt);
+                // theEquation = theEquation +" " + randomHolding+ " ";
+                theEquation = theEquation + "d6 ";
                 EquationField.setText(theEquation);
             }
 
@@ -260,9 +314,10 @@ public class MainActivity extends AppCompatActivity {
         d8B.setOnClickListener(new OnClickListener() {
             //@Override
             public void onClick(View v) {
-                int randomInt = randomGenerator.nextInt(8)+1;
-                randomHolding = Integer.toString(randomInt);
-                theEquation = theEquation +" " + randomHolding+ " ";
+                // int randomInt = randomGenerator.nextInt(8)+1;
+                //randomHolding = Integer.toString(randomInt);
+                //theEquation = theEquation +" " + randomHolding+ " ";
+                theEquation = theEquation + "d8 ";
                 EquationField.setText(theEquation);
             }
 
@@ -271,9 +326,10 @@ public class MainActivity extends AppCompatActivity {
         d10B.setOnClickListener(new OnClickListener() {
             //@Override
             public void onClick(View v) {
-                int randomInt = randomGenerator.nextInt(10)+1;
-                randomHolding = Integer.toString(randomInt);
-                theEquation = theEquation +" " + randomHolding+ " ";
+                //int randomInt = randomGenerator.nextInt(10)+1;
+                // randomHolding = Integer.toString(randomInt);
+                //theEquation = theEquation +" " + randomHolding+ " ";
+                theEquation = theEquation + "d10 ";
                 EquationField.setText(theEquation);
             }
 
@@ -282,32 +338,35 @@ public class MainActivity extends AppCompatActivity {
         d12B.setOnClickListener(new OnClickListener() {
             //@Override
             public void onClick(View v) {
-                int randomInt = randomGenerator.nextInt(12)+1;
-                randomHolding = Integer.toString(randomInt);
-                theEquation = theEquation +" " + randomHolding+ " ";
+                //int randomInt = randomGenerator.nextInt(12)+1;
+                //randomHolding = Integer.toString(randomInt);
+                //theEquation = theEquation +" " + randomHolding+ " ";
+                theEquation = theEquation + "d12 ";
                 EquationField.setText(theEquation);
             }
 
         });
 
         d20B.setOnClickListener(new OnClickListener() {
-           // @Override
+            // @Override
             public void onClick(View v) {
-                int randomInt = randomGenerator.nextInt(20)+1;
-                randomHolding = Integer.toString(randomInt);
-                theEquation = theEquation +" " + randomHolding+ " ";
+                //int randomInt = randomGenerator.nextInt(20)+1;
+                // randomHolding = Integer.toString(randomInt);
+                //theEquation = theEquation +" " + randomHolding+ " ";
+                theEquation = theEquation + "d20 ";
                 EquationField.setText(theEquation);
             }
 
         });
 
-        d100B.setOnClickListener(new View.OnClickListener() {
+        d100B.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int randomInt = randomGenerator.nextInt(100)+1;
-                randomHolding = Integer.toString(randomInt);
-                    theEquation = theEquation +" " + randomHolding+ " ";
-                    EquationField.setText(theEquation);
+                // int randomInt = randomGenerator.nextInt(100)+1;
+                //randomHolding = Integer.toString(randomInt);
+                // theEquation = theEquation +" " + randomHolding+ " ";
+                theEquation = theEquation + "d100 ";
+                EquationField.setText(theEquation);
             }
 
             //ScriptEngineManager mgr = new ScriptEngineManager();
@@ -316,13 +375,16 @@ public class MainActivity extends AppCompatActivity {
             //System.out.println(engine.eval(infix));
         });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -345,5 +407,45 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.jesi.diceroller/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.jesi.diceroller/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }
